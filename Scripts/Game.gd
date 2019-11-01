@@ -5,14 +5,16 @@ var WINDOW_GRID = Vector2(WINDOW_SIZE.x/32, WINDOW_SIZE.y/32)
 
 var WALL = preload("res://Scenes/Wall.tscn")
 var WALL_SCRIPT = preload("res://Scenes/Wall.gd")
+
 var rng = RandomNumberGenerator.new()
 
-func _ready():	
+func _ready():
+	create_borders()
 	rng.randomize()
-	for i in range(10):
-		walls_generator(50)
+	create_camera()
 func _process(delta):
-	pass
+	while get_child_count() < 600:
+		walls_generator(rng.randi_range(5,10))
 
 func walls_generator(amount):
 	var last_pos = get_child(get_child_count()-1).global_position
@@ -20,6 +22,7 @@ func walls_generator(amount):
 		var wall = WALL.instance()
 		wall.set_script(WALL_SCRIPT)		
 		add_child(wall)
+		wall.z_index += 3
 		if i == 0:
 			set_rand_pos(wall)
 		else:
@@ -47,8 +50,8 @@ func next_wall_position(object, last_pos):
 func set_rand_pos(object):
 	var done = false	
 	while not done:
-		var pos_x = 32*floor(rng.randi_range(0,  WINDOW_GRID.x))
-		var pos_y = 32*floor(rng.randi_range(0,  WINDOW_GRID.y))
+		var pos_x = 32*floor(rng.randi_range(1,  WINDOW_GRID.x-1))
+		var pos_y = 32*floor(rng.randi_range(1,  WINDOW_GRID.y-1))
 		object.global_position = Vector2(pos_x, pos_y)
 		done = is_single_pos(object) and is_pos_on_window(object.global_position)
 
@@ -62,16 +65,26 @@ func is_pos_on_window(pos):
 	return (pos.x >= 0 and pos.y >= 0) and (pos.x <= WINDOW_SIZE.x and pos.y <=WINDOW_SIZE.y)
 
 func create_borders():
-	for y in [0, WINDOW_SIZE.y]:
-		for x in range(WINDOW_GRID.x):
+	for y in [-32, WINDOW_SIZE.y+32]:
+		for x in range(-1,WINDOW_GRID.x+1):
 			var wall = WALL.instance()
 			add_child(wall)
 			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(32*x, y)
-	for x in [0, WINDOW_SIZE.x]:
-		for y in range(WINDOW_GRID.y):
+	for x in [-32, WINDOW_SIZE.x+32]:
+		for y in range(-1,WINDOW_GRID.y+1):
 			var wall = WALL.instance()
 			add_child(wall)
 			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(x, 32*y)
-	
+
+func create_camera():
+	var camera = Camera2D.new()
+	$Player.add_child(camera)
+	camera.anchor_mode = 1
+	camera.current = true
+	camera.limit_left = -32
+	camera.limit_right = WINDOW_SIZE.x+32
+	camera.limit_top = -32
+	camera.limit_bottom = WINDOW_SIZE.y+32
+	camera.set_zoom(Vector2(1,1))

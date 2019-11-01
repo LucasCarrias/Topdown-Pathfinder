@@ -13,7 +13,7 @@ func check_steps(pos):
 		var possible = true
 		for y in [-32,0,32]:
 			step = Vector2(x,y)
-			if !is_single_pos(pos+step):
+			if !is_single_pos(pos+step) and !is_pos_on_window(pos+step):
 				possible = false
 				break
 		if possible:
@@ -24,7 +24,7 @@ func check_steps(pos):
 		var possible = true
 		for x in [-32,0,32]:
 			step = Vector2(x,y)
-			if !is_single_pos(pos+step):
+			if !is_single_pos(pos+step) and !is_pos_on_window(pos+step):
 				possible = false
 				break
 		if possible:
@@ -40,3 +40,7 @@ func is_single_pos(pos):
 			if get_parent().get_child(i).global_position == pos:
 				return false
 	return true
+
+func is_pos_on_window(pos):
+	var WINDOW_SIZE = get_parent().WINDOW_SIZE
+	return (pos.x >= 0 and pos.y >= 0) and (pos.x < WINDOW_SIZE.x and pos.y <WINDOW_SIZE.y)

@@ -1,5 +1,9 @@
 extends Area2D
 
+const WINDOW_SIZE = Vector2(1024, 640)
+var WINDOW_GRID = Vector2(WINDOW_SIZE.x/32, WINDOW_SIZE.y/32)
+var rng = RandomNumberGenerator.new()
+
 var RIGHT = false
 var LEFT = false
 var UP = false
@@ -12,12 +16,12 @@ func _ready():
 
 func _process(delta):
 	movement()
-	
-func movement():
-	
+	if !is_single_pos(global_position):
+		set_rand_pos(self)
+		
+func movement():	
 	if !$Front.is_colliding() and is_arrow_released():
-		move()
-	
+		move()	
 	if Input.is_action_just_pressed("ui_right"):
 		update_direction("right")
 	if Input.is_action_just_pressed("ui_left"):
@@ -68,3 +72,20 @@ func is_arrow_released():
 		if Input.is_action_just_released(key):
 			return true
 	return false			
+
+func set_rand_pos(object):
+	var done = false	
+	while not done:
+		var pos_x = 32*floor(rng.randi_range(1,  WINDOW_GRID.x-1))
+		var pos_y = 32*floor(rng.randi_range(1,  WINDOW_GRID.y-1))
+		object.global_position = Vector2(pos_x, pos_y)
+		done = is_single_pos(object.global_position) and is_pos_on_window(object.global_position)
+
+func is_single_pos(pos):
+	for i in range(1,get_parent().get_child_count()-1):
+			if get_parent().get_child(i).global_position == pos:
+				return false
+	return true
+
+func is_pos_on_window(pos):
+	return (pos.x >= 0 and pos.y >= 0) and (pos.x <= WINDOW_SIZE.x and pos.y <=WINDOW_SIZE.y)

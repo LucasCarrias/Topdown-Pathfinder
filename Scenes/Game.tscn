@@ -7,9 +7,4 @@
 script = ExtResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 512, 320 )
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2( -512, -320 )
-anchor_mode = 0
-current = true
+position = Vector2( 512, 288 )
