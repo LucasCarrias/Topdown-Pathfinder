@@ -7,11 +7,10 @@ var WALL = preload("res://Scenes/Wall.tscn")
 var WALL_SCRIPT = preload("res://Scenes/Wall.gd")
 var rng = RandomNumberGenerator.new()
 
-func _ready():
-	create_borders()
-	rng.randomize()	
-	walls_generator(10)	
-	
+func _ready():	
+	rng.randomize()
+	for i in range(10):
+		walls_generator(50)
 func _process(delta):
 	pass
 
@@ -20,8 +19,8 @@ func walls_generator(amount):
 	for i in range(amount):
 		var wall = WALL.instance()
 		wall.set_script(WALL_SCRIPT)		
-		add_child(wall)		
-		if i == 0 and get_child_count() < 2:
+		add_child(wall)
+		if i == 0:
 			set_rand_pos(wall)
 		else:
 			next_wall_position(wall, last_pos)
@@ -67,10 +66,12 @@ func create_borders():
 		for x in range(WINDOW_GRID.x):
 			var wall = WALL.instance()
 			add_child(wall)
+			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(32*x, y)
 	for x in [0, WINDOW_SIZE.x]:
 		for y in range(WINDOW_GRID.y):
 			var wall = WALL.instance()
 			add_child(wall)
+			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(x, 32*y)
 	

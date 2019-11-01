@@ -12,8 +12,8 @@ func check_steps(pos):
 	for x in [-32,32]:
 		var possible = true
 		for y in [-32,0,32]:
-			step = pos + Vector2(x,y)
-			if !is_single_pos(step):
+			step = Vector2(x,y)
+			if !is_single_pos(pos+step):
 				possible = false
 				break
 		if possible:
@@ -23,14 +23,15 @@ func check_steps(pos):
 	for y in [-32,32]:
 		var possible = true
 		for x in [-32,0,32]:
-			step = pos + Vector2(x,y)
-			if !is_single_pos(step):
+			step = Vector2(x,y)
+			if !is_single_pos(pos+step):
 				possible = false
 				break
 		if possible:
 			step = Vector2(0, step.y)
 			possible_movements.append(step)
-	
+	if possible_movements == []:
+		possible_movements = [Vector2(0,0)]
 	print(str(get_position_in_parent())+" "+str(possible_movements))
 	return possible_movements
 
