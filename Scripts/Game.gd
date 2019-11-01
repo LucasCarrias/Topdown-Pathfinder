@@ -8,13 +8,14 @@ var WALL_SCRIPT = preload("res://Scenes/Wall.gd")
 
 var rng = RandomNumberGenerator.new()
 
-func _ready():
-	create_borders()
+func _ready():	
 	rng.randomize()
-	create_camera()
+	create_camera()	
+	create_borders()
 func _process(delta):
 	while get_child_count() < 600:
-		walls_generator(rng.randi_range(5,10))
+		walls_generator(rng.randi_range(5,30))
+	
 
 func walls_generator(amount):
 	var last_pos = get_child(get_child_count()-1).global_position
