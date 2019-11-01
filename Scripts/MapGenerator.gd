@@ -11,12 +11,13 @@ var childs_count
 
 func _ready():	
 	rng.randomize()
+	while get_child_count() < 100:
+		walls_generator(rng.randi_range(5,30))
 	create_borders()
-	childs_count = get_child_count()
+	
 
 func _process(delta):
-	while get_child_count() < 300 + childs_count:
-		walls_generator(rng.randi_range(5,30))
+	pass
 		
 func walls_generator(amount):
 	var last_pos

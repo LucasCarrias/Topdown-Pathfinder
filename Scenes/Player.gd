@@ -17,9 +17,7 @@ func _ready():
 
 func _process(delta):
 	movement()
-	if !is_single_pos(global_position):
-		set_rand_pos(self)
-		
+
 func movement():	
 	if !$Front.is_colliding() and !is_arrow_released():
 		if move:
@@ -102,3 +100,8 @@ func is_pos_on_window(pos):
 
 func _on_MoveDelay_timeout():
 	move = true
+
+
+func _on_Stuck_body_entered(body):
+	if body != self:
+		set_rand_pos(self)
