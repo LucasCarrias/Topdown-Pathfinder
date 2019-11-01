@@ -17,7 +17,8 @@ func _ready():
 
 func _process(delta):
 	movement()
-
+	break_wall()
+#MOVEMENT START
 func movement():	
 	if !$Front.is_colliding() and !is_arrow_released():
 		if move:
@@ -55,17 +56,17 @@ func move():
 	else:
 		motion.y *= 0
 	global_position += motion
-	
-	
-	
-func change_front_direction():
-	var angle = 0
-	for dir in direction.keys():
-		if direction[dir]:
-			break
-		else:
-			angle += 90
-	$Front.rotation_degrees = angle
+
+
+func change_front_direction():	
+	if not direction["stop"]:
+		var angle = 0
+		for dir in direction.keys():
+			if direction[dir]:
+				break
+			else:
+				angle += 90
+		$Front.rotation_degrees = angle
 
 func update_direction(new_dir):
 	for dir in direction.keys():
@@ -81,6 +82,15 @@ func is_arrow_released():
 			return true
 	return false			
 
+func _on_MoveDelay_timeout():
+	move = true
+#MOVEMENT END
+func break_wall():
+	if $Front.is_colliding():
+		if Input.is_action_just_pressed("ui_accept"):
+			$Front.get_collider().queue_free()
+				
+				
 func set_rand_pos(object):
 	var done = false	
 	while not done:
@@ -97,10 +107,6 @@ func is_single_pos(pos):
 
 func is_pos_on_window(pos):
 	return (pos.x >= 0 and pos.y >= 0) and (pos.x <= WINDOW_SIZE.x and pos.y <=WINDOW_SIZE.y)
-
-func _on_MoveDelay_timeout():
-	move = true
-
 
 func _on_Stuck_body_entered(body):
 	if body != self:
