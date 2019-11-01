@@ -8,8 +8,9 @@ var WALL_SCRIPT = preload("res://Scenes/Wall.gd")
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	create_borders()
 	rng.randomize()	
-	walls_generator(100)
+	walls_generator(10)	
 	
 func _process(delta):
 	pass
@@ -30,7 +31,7 @@ func next_wall_position(object, last_pos):
 	var current_pos
 	var loops = 0
 	var done = false	
-	var steps = object.check_steps()	
+	var steps = object.check_steps(last_pos)
 	while not done and loops < 50:
 		loops += 1
 		current_pos = last_pos
@@ -61,3 +62,15 @@ func is_single_pos(object):
 func is_pos_on_window(pos):
 	return (pos.x >= 0 and pos.y >= 0) and (pos.x <= WINDOW_SIZE.x and pos.y <=WINDOW_SIZE.y)
 
+func create_borders():
+	for y in [0, WINDOW_SIZE.y]:
+		for x in range(WINDOW_GRID.x):
+			var wall = WALL.instance()
+			add_child(wall)
+			wall.global_position = Vector2(32*x, y)
+	for x in [0, WINDOW_SIZE.x]:
+		for y in range(WINDOW_GRID.y):
+			var wall = WALL.instance()
+			add_child(wall)
+			wall.global_position = Vector2(x, 32*y)
+	
