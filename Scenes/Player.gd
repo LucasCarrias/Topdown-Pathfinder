@@ -8,8 +8,9 @@ var RIGHT = false
 var LEFT = false
 var UP = false
 var DOWN = false
-var direction = {"right":false, "down":false, "left":false, "up":false}
+var direction = {"right":false, "down":false, "left":false, "up":false, "stop":true}
 var step = 32
+var move = false
 
 func _ready():
 	pass
@@ -20,15 +21,23 @@ func _process(delta):
 		set_rand_pos(self)
 		
 func movement():	
-	if !$Front.is_colliding() and is_arrow_released():
-		move()	
-	if Input.is_action_just_pressed("ui_right"):
+	if !$Front.is_colliding() and !is_arrow_released():
+		if move:
+			move()			
+		else:
+			if $MoveDelay.is_stopped():
+				$MoveDelay.start()
+		move = false
+	else:
+		update_direction("stop")
+		
+	if Input.is_action_pressed("ui_right"):
 		update_direction("right")
-	if Input.is_action_just_pressed("ui_left"):
+	if Input.is_action_pressed("ui_left"):
 		update_direction("left")
-	if Input.is_action_just_pressed("ui_up"):
+	if Input.is_action_pressed("ui_up"):
 		update_direction("up")
-	if Input.is_action_just_pressed("ui_down"):
+	if Input.is_action_pressed("ui_down"):
 		update_direction("down")
 	
 	change_front_direction()
@@ -48,6 +57,7 @@ func move():
 	else:
 		motion.y *= 0
 	global_position += motion
+	
 	
 	
 func change_front_direction():
@@ -89,3 +99,6 @@ func is_single_pos(pos):
 
 func is_pos_on_window(pos):
 	return (pos.x >= 0 and pos.y >= 0) and (pos.x <= WINDOW_SIZE.x and pos.y <=WINDOW_SIZE.y)
+
+func _on_MoveDelay_timeout():
+	move = true
