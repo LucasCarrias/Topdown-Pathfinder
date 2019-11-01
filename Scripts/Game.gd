@@ -13,10 +13,8 @@ func _ready():
 	create_camera()	
 	create_borders()
 func _process(delta):
-	while get_child_count() < 600:
+	while get_child_count() < 200:
 		walls_generator(rng.randi_range(5,30))
-	
-
 func walls_generator(amount):
 	var last_pos = get_child(get_child_count()-1).global_position
 	for i in range(amount):
@@ -66,19 +64,26 @@ func is_pos_on_window(pos):
 	return (pos.x >= 0 and pos.y >= 0) and (pos.x <= WINDOW_SIZE.x and pos.y <=WINDOW_SIZE.y)
 
 func create_borders():
+	var wall = WALL.instance()
+	
 	for y in [-32, WINDOW_SIZE.y+32]:
 		for x in range(-1,WINDOW_GRID.x+1):
-			var wall = WALL.instance()
+			wall = WALL.instance()
 			add_child(wall)
 			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(32*x, y)
+	
 	for x in [-32, WINDOW_SIZE.x+32]:
 		for y in range(-1,WINDOW_GRID.y+1):
-			var wall = WALL.instance()
+			wall = WALL.instance()
 			add_child(wall)
 			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(x, 32*y)
-
+	wall = WALL.instance()
+	add_child(wall)
+	wall.modulate = Color(0,0.4,0)
+	wall.global_position = Vector2(WINDOW_SIZE.x+32, 32*(WINDOW_GRID.y+1))
+	
 func create_camera():
 	var camera = Camera2D.new()
 	$Player.add_child(camera)

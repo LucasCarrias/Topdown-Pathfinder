@@ -35,7 +35,7 @@ func check_steps(pos):
 		
 	if possible_movements == []:
 		possible_movements = [Vector2(0,0)]
-	#print(str(get_position_in_parent())+" "+str(possible_movements))
+	print(str(get_position_in_parent())+" "+str(possible_movements))
 	return possible_movements
 
 func is_single_pos(pos):
