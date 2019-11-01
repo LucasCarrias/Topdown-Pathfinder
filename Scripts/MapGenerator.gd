@@ -11,11 +11,10 @@ var childs_count
 
 func _ready():	
 	rng.randomize()
-	while get_child_count() < 200:
+	while get_child_count() < 25:
 		walls_generator(20)
 	create_borders()
 	
-
 func _process(delta):
 	pass
 		
@@ -45,7 +44,6 @@ func next_wall_position(object, last_pos):
 		current_pos = last_pos
 		current_pos += steps[rng.randi_range(0, len(steps)-1)]
 		done = is_single_pos(object) and is_pos_on_window(object.global_position)
-
 	if loops == 50:
 		done = false
 		set_rand_pos(object)
