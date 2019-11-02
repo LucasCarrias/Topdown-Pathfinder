@@ -11,8 +11,8 @@ var childs_count
 
 func _ready():	
 	rng.randomize()
-	while get_child_count() < 200:
-		walls_generator(100)
+	while get_child_count() < 220:
+		walls_generator(rng.randi_range(5,50))
 	create_borders()
 	
 func _process(delta):

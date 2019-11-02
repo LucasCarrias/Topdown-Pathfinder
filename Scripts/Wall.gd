@@ -49,14 +49,16 @@ func check_steps(pos, double_check):
 func set_rand_pos(no_surround):
 	#If no surround is true, the objtect will only be set on a free 3x3 square
 	#Bug: no surround issue excepcted on maps with 300 or more walls
-	var done = false	
-	while not done:
+	var done = false
+	var loops = 0
+	while not done and loops <= 1000:
 		var pos_x = 32*floor(rng.randi_range(1,  WINDOW_GRID.x-1))
 		var pos_y = 32*floor(rng.randi_range(1,  WINDOW_GRID.y-1))
 		global_position = Vector2(pos_x, pos_y)
 		done = is_single_pos(global_position) and is_pos_on_window(global_position)
-		if no_surround:
+		if no_surround and loops <= 500:
 			done = is_no_surround(global_position)
+		loops += 1
 
 func is_single_pos(pos):
 	for i in range(get_parent().get_child_count()-1):
