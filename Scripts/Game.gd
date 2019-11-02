@@ -1,10 +1,10 @@
 extends Node2D
 
-const WINDOW_SIZE = Vector2(1024, 640)
-var WINDOW_GRID = Vector2(WINDOW_SIZE.x/32, WINDOW_SIZE.y/32)
+const WINDOW_SIZE = Global.WINDOW_SIZE
+var WINDOW_GRID = Global.WINDOW_GRID
 
 var MAP_GEN = preload("res://Scenes/MapGenerator.tscn")
-var MAP_GEN_SCRIPT = preload("res://Scripts/MapGenerator.gd")
+
 
 var rng = RandomNumberGenerator.new()
 
@@ -15,7 +15,7 @@ func _ready():
 
 func create_map():
 	var map_gen = MAP_GEN.instance()
-	map_gen.set_script(MAP_GEN_SCRIPT)
+	
 	
 	
 func create_camera():

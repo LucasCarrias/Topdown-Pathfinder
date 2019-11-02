@@ -1,18 +1,17 @@
 extends Node2D
 
-const WINDOW_SIZE = Vector2(1024, 640)
-var WINDOW_GRID = Vector2(WINDOW_SIZE.x/32, WINDOW_SIZE.y/32)
+const WINDOW_SIZE = Global.WINDOW_SIZE
+var WINDOW_GRID = Global.WINDOW_GRID
 
 var WALL = preload("res://Scenes/Wall.tscn")
-var WALL_SCRIPT = preload("res://Scenes/Wall.gd")
 
 var rng = RandomNumberGenerator.new()
 var childs_count
 
 func _ready():	
 	rng.randomize()
-	while get_child_count() < 25:
-		walls_generator(20)
+	while get_child_count() < 100:
+		walls_generator(100)
 	create_borders()
 	
 func _process(delta):
@@ -21,8 +20,7 @@ func _process(delta):
 func walls_generator(amount):
 	var last_pos
 	for i in range(amount):
-		var wall = WALL.instance()
-		wall.set_script(WALL_SCRIPT)		
+		var wall = WALL.instance()				
 		add_child(wall)
 		wall.z_index += 3
 		if i == 0:
@@ -35,7 +33,7 @@ func next_wall_position(object, last_pos):
 	var current_pos
 	var loops = 0
 	var done = false	
-	var steps = object.check_steps(last_pos)
+	var steps = object.check_steps(last_pos, false)
 	while not done and loops < 50:
 		loops += 1
 		if steps == []:

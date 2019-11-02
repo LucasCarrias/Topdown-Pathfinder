@@ -1,7 +1,7 @@
 extends Area2D
 
-const WINDOW_SIZE = Vector2(1024, 640)
-var WINDOW_GRID = Vector2(WINDOW_SIZE.x/32, WINDOW_SIZE.y/32)
+const WINDOW_SIZE = Global.WINDOW_SIZE
+var WINDOW_GRID = Global.WINDOW_GRID
 var rng = RandomNumberGenerator.new()
 
 var RIGHT = false
