@@ -3,10 +3,12 @@ extends StaticBody2D
 onready var WINDOW_GRID = get_parent().WINDOW_GRID
 var posible_steps = 0
 var rng = RandomNumberGenerator.new()
+
 func _ready():
 	$Label.text = str(get_position_in_parent())
 	
 func check_steps(pos, double_check):
+	#If double is true reduces drasticaly the possibility of "empty rooms"
 	var possible_movements = []
 	var step = Vector2()
 	var check_list = [0,-32,32]
@@ -22,7 +24,6 @@ func check_steps(pos, double_check):
 				if !is_single_pos(pos+Vector2(x*2,y)):
 					possible = false
 					break
-		
 		if possible:
 			step = Vector2(step.x, 0)
 			possible_movements.append(step)
@@ -42,10 +43,12 @@ func check_steps(pos, double_check):
 		if possible:
 			step = Vector2(0, step.y)
 			possible_movements.append(step)
-	print(str(get_parent().get_child_count()-2)+str(possible_movements))
+	#print(str(get_parent().get_child_count()-2)+str(possible_movements))
 	return possible_movements
 
 func set_rand_pos(no_surround):
+	#If no surround is true, the objtect will only be set on a free 3x3 square
+	#Bug: no surround issue excepcted on maps with 300 or more walls
 	var done = false	
 	while not done:
 		var pos_x = 32*floor(rng.randi_range(1,  WINDOW_GRID.x-1))
