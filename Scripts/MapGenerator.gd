@@ -5,12 +5,13 @@ var WINDOW_GRID = Global.WINDOW_GRID
 
 var WALL = preload("res://Scenes/Wall.tscn")
 
+
 var rng = RandomNumberGenerator.new()
 var childs_count
 
 func _ready():	
 	rng.randomize()
-	while get_child_count() < 200:
+	while get_child_count() < 100:
 		walls_generator(100)
 	create_borders()
 	
@@ -44,7 +45,7 @@ func next_wall_position(object, last_pos):
 		done = is_single_pos(object) and is_pos_on_window(object.global_position)
 	if loops == 50:
 		done = false
-		set_rand_pos(object)
+		object.set_rand_pos(true)
 		current_pos = object.global_position
 	object.global_position = current_pos
 	
@@ -56,6 +57,7 @@ func set_rand_pos(object):
 		var pos_y = 32*floor(rng.randi_range(1,  WINDOW_GRID.y-1))
 		object.global_position = Vector2(pos_x, pos_y)
 		done = is_single_pos(object) and is_pos_on_window(object.global_position)
+		
 
 func is_single_pos(object):
 	for i in range(get_child_count()-1):			
