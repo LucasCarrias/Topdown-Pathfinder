@@ -9,7 +9,7 @@ func _ready():
 func check_steps(pos, double_check):
 	var possible_movements = []
 	var step = Vector2()
-	var check_list = [0,-32,32,-64,64] if double_check else [0,-32,32]
+	var check_list = [0,-32,32]
 	for x in [-32,32]:
 		var possible = true
 		for y in check_list:
@@ -18,6 +18,10 @@ func check_steps(pos, double_check):
 			if !is_single_pos(pos+Vector2(x,y)) or !is_pos_on_window(pos+Vector2(x,y)):
 				possible = false
 				break
+			if double_check:
+				if !is_single_pos(pos+Vector2(x*2,y)):
+					possible = false
+					break
 		
 		if possible:
 			step = Vector2(step.x, 0)
@@ -31,10 +35,14 @@ func check_steps(pos, double_check):
 			if !is_single_pos(pos+Vector2(x,y)) or !is_pos_on_window(pos+Vector2(x,y)):
 				possible = false
 				break
+			if double_check:
+				if !is_single_pos(pos+Vector2(x,y*2)):
+					possible = false
+					break
 		if possible:
 			step = Vector2(0, step.y)
 			possible_movements.append(step)
-	print(str(get_position_in_parent())+" "+str(possible_movements))
+	print(str(get_parent().get_child_count()-2)+str(possible_movements))
 	return possible_movements
 
 func set_rand_pos(no_surround):
@@ -59,6 +67,7 @@ func is_no_surround(pos):
 			for y in [-32,0,32]:
 				if get_parent().get_child(i).global_position == pos+Vector2(x,y):
 					return false
+	print("ok")
 	return true
 	
 func is_pos_on_window(pos):

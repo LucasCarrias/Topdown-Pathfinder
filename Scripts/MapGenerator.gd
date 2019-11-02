@@ -43,21 +43,12 @@ func next_wall_position(object, last_pos):
 		current_pos = last_pos
 		current_pos += steps[rng.randi_range(0, len(steps)-1)]
 		done = is_single_pos(object) and is_pos_on_window(object.global_position)
+	
 	if loops == 50:
-		done = false
 		object.set_rand_pos(true)
 		current_pos = object.global_position
 	object.global_position = current_pos
 	
-	
-func set_rand_pos(object):
-	var done = false	
-	while not done:
-		var pos_x = 32*floor(rng.randi_range(1,  WINDOW_GRID.x-1))
-		var pos_y = 32*floor(rng.randi_range(1,  WINDOW_GRID.y-1))
-		object.global_position = Vector2(pos_x, pos_y)
-		done = is_single_pos(object) and is_pos_on_window(object.global_position)
-		
 
 func is_single_pos(object):
 	for i in range(get_child_count()-1):			
@@ -89,3 +80,11 @@ func create_borders():
 	add_child(wall)
 	wall.modulate = Color(0,0.4,0)
 	wall.global_position = Vector2(WINDOW_SIZE.x+32, 32*(WINDOW_GRID.y+1))
+
+func set_rand_pos(object):
+	var done = false	
+	while not done:
+		var pos_x = 32*floor(rng.randi_range(1,  WINDOW_GRID.x-1))
+		var pos_y = 32*floor(rng.randi_range(1,  WINDOW_GRID.y-1))
+		object.global_position = Vector2(pos_x, pos_y)
+		done = is_single_pos(object) and is_pos_on_window(object.global_position)
