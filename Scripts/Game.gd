@@ -14,9 +14,7 @@ func _ready():
 	create_camera()
 
 func create_map():
-	var map_gen = MAP_GEN.instance()
-	
-	
+	var map_gen = MAP_GEN.instance()	
 	
 func create_camera():
 	var camera = Camera2D.new()

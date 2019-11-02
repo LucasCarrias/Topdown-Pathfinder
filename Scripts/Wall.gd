@@ -9,32 +9,30 @@ func _ready():
 func check_steps(pos, double_check):
 	var possible_movements = []
 	var step = Vector2()
-	var check_list = [-64,-32,0,32,64] if double_check else [-32,0,32]
-	for x in check_list:
+	var check_list = [0,-32,32,-64,64] if double_check else [0,-32,32]
+	for x in [-32,32]:
 		var possible = true
-		for y in [-32,0,32]:
+		for y in check_list:
 			if (x!=-64 and x!=64):
 				step = Vector2(x,y)
 			if !is_single_pos(pos+Vector2(x,y)) or !is_pos_on_window(pos+Vector2(x,y)):
 				possible = false
 				break
-				
-		if (x!=-64 and x!=64):
-			step = Vector2(step.x, 0)
-
+		
 		if possible:
+			step = Vector2(step.x, 0)
 			possible_movements.append(step)
 	
-	for y in check_list:
+	for y in [-32,32]:
 		var possible = true
-		for x in [-32,0,32]:
+		for x in check_list:
 			if (y!=-64 and y!=64):
 				step = Vector2(x,y)
 			if !is_single_pos(pos+Vector2(x,y)) or !is_pos_on_window(pos+Vector2(x,y)):
 				possible = false
 				break
-		if (y!=-64 and y!=64):
-			step = Vector2(0, step.y)
+		
+		
 		if possible:
 			step = Vector2(0, step.y)
 			possible_movements.append(step)

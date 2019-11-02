@@ -10,7 +10,7 @@ var childs_count
 
 func _ready():	
 	rng.randomize()
-	while get_child_count() < 100:
+	while get_child_count() < 200:
 		walls_generator(100)
 	create_borders()
 	
@@ -33,7 +33,7 @@ func next_wall_position(object, last_pos):
 	var current_pos
 	var loops = 0
 	var done = false	
-	var steps = object.check_steps(last_pos, false)
+	var steps = object.check_steps(last_pos, true) #Possible steps
 	while not done and loops < 50:
 		loops += 1
 		if steps == []:
@@ -72,6 +72,7 @@ func create_borders():
 		for x in range(-1,WINDOW_GRID.x+1):
 			wall = WALL.instance()
 			add_child(wall)
+			wall.get_node("Label").visible = false
 			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(32*x, y)
 	
@@ -79,6 +80,7 @@ func create_borders():
 		for y in range(-1,WINDOW_GRID.y+1):
 			wall = WALL.instance()
 			add_child(wall)
+			wall.get_node("Label").visible = false
 			wall.modulate = Color(0,0.4,0)
 			wall.global_position = Vector2(x, 32*y)
 	wall = WALL.instance()
